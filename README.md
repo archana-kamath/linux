@@ -37,10 +37,10 @@ Go to VM Machine settings -> Processors -> Virtualization engine -> Enable the '
 Screen prints of the output
 
 Pinbased and Primary Proc Based controls
-https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/pin_prim.JPG
+![alt text](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/pin_prim.JPG?raw=true)
 
 Secondary Proc Based controls
-https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/secondary.JPG
+![alt text](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/secondary.JPG?raw=true)
 
 Entry and Exit Based controls
-https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/entry_exit.JPG
+![alt text](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/entry_exit.JPG?raw=true)
