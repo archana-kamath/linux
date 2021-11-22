@@ -24,6 +24,7 @@
 #include "mmu.h"
 #include "trace.h"
 #include "pmu.h"
+#include <linux/module.h>
 
 /*
  * Unlike "struct cpuinfo_x86.x86_capability", kvm_cpu_caps doesn't need to be
@@ -1222,20 +1223,87 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
 }
 EXPORT_SYMBOL_GPL(kvm_cpuid);
 
+atomic_t total_exits = ATOMIC_INIT(0);
+atomic_long_t cpu_cycles = ATOMIC_INIT(0);
+atomic_t exits_per_reason[70];
+atomic_long_t cpu_cycles_per_reason[70];
+
 int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 {
 	u32 eax, ebx, ecx, edx;
+	uint8_t i;
 
+	char message[100];
+	uint64_t cpu_cycle, exit_reason_cycles;
 	if (cpuid_fault_enabled(vcpu) && !kvm_require_cpl(vcpu, 0))
 		return 1;
 
 	eax = kvm_rax_read(vcpu);
 	ecx = kvm_rcx_read(vcpu);
-	kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
+	if (eax == 0x4FFFFFFF){
+		eax = atomic_read(&total_exits);
+		
+	}else if(eax == 0x4FFFFFFE){
+		cpu_cycle = atomic64_read(&cpu_cycles);
+		ebx = (cpu_cycle >> 32);
+		ecx = (cpu_cycle & 0xFFFFFFFF);
+	}else if(eax == 0x4FFFFFFD || eax == 0x4FFFFFFC){
+				
+				if (ecx < 0 || ecx > 69 || ecx == 35 || ecx == 38 || ecx == 42 || ecx == 65) {
+					eax = 0x0;
+					ebx = 0x0;
+					ecx = 0x0;
+					edx = 0xFFFFFFFF;
+				} else if (ecx == 5 || ecx == 6 || ecx == 11 || ecx == 17 || ecx == 66 || ecx == 69) {
+					eax = 0x0;
+					ebx = 0x0;
+					ecx = 0x0;
+					edx = 0x0;
+				}
+				else { 
+					if (eax == 0x4FFFFFFD) {
+						eax = atomic_read(&exits_per_reason[ecx]);
+						ebx = 0x0;
+						ecx = 0x0;
+						edx = 0x0; 
+						printk("----0x4FFFFFFD----");
+						i=0;
+						while(i < 70) {
+							snprintf(message, 99, "Exit : %d Time spent %d \n", i, atomic_read(&exits_per_reason[i]));
+							printk(message);
+							i++;
+						}
+					} else if(eax == 0x4FFFFFFC) {
+						exit_reason_cycles = atomic64_read(&cpu_cycles_per_reason[ecx]);
+						ebx = (exit_reason_cycles >> 32);
+						ecx = (exit_reason_cycles & 0xFFFFFFFF);
+						edx = 0x0; 
+						printk("----0x4FFFFFFC----");
+						i=0;
+						while(i < 70) {
+							snprintf(message, 99, "Exit : %d  Time spent %lli \n", i, atomic64_read(&cpu_cycles_per_reason[i]));
+							printk(message);
+							i++;
+						}
+					}
+				}
+				
+	}else{
+		kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
+
+	}
 	kvm_rax_write(vcpu, eax);
 	kvm_rbx_write(vcpu, ebx);
 	kvm_rcx_write(vcpu, ecx);
 	kvm_rdx_write(vcpu, edx);
 	return kvm_skip_emulated_instruction(vcpu);
 }
+
+
+
+EXPORT_SYMBOL(total_exits);
+EXPORT_SYMBOL(cpu_cycles);
+EXPORT_SYMBOL(exits_per_reason);
+EXPORT_SYMBOL(cpu_cycles_per_reason);
+
 EXPORT_SYMBOL_GPL(kvm_emulate_cpuid);
