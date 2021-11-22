@@ -177,7 +177,7 @@ Run below to get output of part 1
 cpuid -l 0x4FFFFFFD -s 0
 
 Run below to get output of part 2
-cpuid -l 0x4FFFFFFC -s )
+cpuid -l 0x4FFFFFFC -s 0
 
 Execute dmesg in outer VM
 Link to output - [Output](https://github.com/archana-kamath/linux/blob/master/output.txt)
