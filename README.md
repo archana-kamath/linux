@@ -115,7 +115,7 @@ cpuid -l 0x4FFFFFFF
 Run below to get output of part 2: <br />
 cpuid -l 0x4FFFFFFE
 
-![alt text](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/output.JPG?raw=true)
+![alt text](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/output2.JPG?raw=true)
 
 ## Assignment 3
 
