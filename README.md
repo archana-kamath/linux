@@ -199,9 +199,9 @@ Before count
 001f17e3 = 2037731 decimal 
 
 After count
-0030b376 - 3191670 decimal
+0030b376 = 3191670 decimal
 
-Difference - 11,53,939
+Difference is 11,53,939
 
 ### Answer 4
 
