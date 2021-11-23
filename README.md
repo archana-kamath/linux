@@ -182,7 +182,7 @@ cpuid -l 0x4FFFFFFC -s 0
 Execute dmesg in outer VM
 Link to output - [Output](https://github.com/archana-kamath/linux/blob/master/output.txt)
 
-![alt text](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/part3_4.png?raw=true)
+![alt text](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/output3.png?raw=true)
 
 ### Answer 3 
 
