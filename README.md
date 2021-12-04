@@ -180,7 +180,7 @@ Run below to get output of part 2
 cpuid -l 0x4FFFFFFC -s 0
 
 Execute dmesg in outer VM
-Link to output - [Output](https://github.com/archana-kamath/linux/blob/master/output.txt)
+Link to output - [Output](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/output_file)
 
 ![alt text](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/output3.JPG?raw=true)
 
@@ -227,3 +227,50 @@ Exit : 54   WBINVD or WBNOINVD<br />
 Exit : 55   XSETBV<br />
 
 Rest of the exits did not occur.<br />
+
+## Assignment 4
+
+### Answer 1: 
+
+Archana Miyar Kamath (015276378)<br />
+Executed the changes required for assignment 4.<br />
+Captured the resulted.<br />
+
+Mounica Kamireddy (015949414)<br />
+Comparison of results (with ept and without ept)<br />
+Noting the difference and coming to a conclusion.<br />
+
+### Answer 2
+
+with ept - [with_ept](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/nested)
+
+![alt text](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/nested.png?raw=true)
+
+without ept - [without_ept](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/shadow)
+
+![alt text](https://github.com/archana-kamath/linux/blob/master/assignment_screenshots/shadow.JPG?raw=true)
+
+### Answer 3
+
+The result was expected. The total exits have increased. The inner VM started with more delay with shadow paging when compared to boot time with nested paging. The exits that were zero with nested paging remained zero with shadow paging (except Exit:14, Exit 33, Exit 58)
+
+Exit 14: INVLPG <br />
+count - 163046<br />
+
+Exit 33: VM-entry failure due to invalid guest state<br />
+count - 22789<br />
+
+Exit 58: INVPCID<br />
+count - 871<br />
+
+### Answer 4
+
+#### With ept(Nested Paging) <br />
+Relatively faster boot time for inner vm.<br />
+Exit count for reason 14, 33 and 58 were zero.<br />
+The exits count of other reason codes were lower than that of shadow paging.<br />
+
+#### Without ept(Shadow Paging)<br />
+Relatively slower boot time for inner vm.
+Exit count for reason 14, 33 and 58 were not zero.
+The exits count of other reason codes were higher than that of nested paging.
